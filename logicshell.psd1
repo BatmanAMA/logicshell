@@ -101,7 +101,7 @@ PrivateData = @{
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/BatmanAMA/logicshell'
+        # ProjectUri = ''
 
         # A URL to an icon representing this module.
         IconUri = 'https://raw.githubusercontent.com/BatmanAMA/logicshell/master/logicshell.png'
