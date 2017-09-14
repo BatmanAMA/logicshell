@@ -12,7 +12,7 @@
 RootModule = 'logicshell.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1.0'
+ModuleVersion = '1.0.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -107,7 +107,7 @@ PrivateData = @{
         IconUri = 'https://raw.githubusercontent.com/BatmanAMA/logicshell/master/logicshell.png'
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'Initial Release'
+        ReleaseNotes = 'A few minor fixes to make the module actually work'
 
         # External dependent modules of this module
         # ExternalModuleDependencies = ''
