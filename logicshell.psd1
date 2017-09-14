@@ -30,7 +30,7 @@ CompanyName = 'None'
 Copyright = 'None'
 
 # Description of the functionality provided by this module
-Description = 'Automates the intricacies of interacting with logicmonitor''s API'
+Description = "Automates the intricacies of interacting with logicmonitor's API"
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -104,7 +104,7 @@ PrivateData = @{
         # ProjectUri = ''
 
         # A URL to an icon representing this module.
-        IconUri = 'https://opsgit.tds.local/uploads/project/avatar/88/logicshell.png'
+        IconUri = 'https://raw.githubusercontent.com/BatmanAMA/logicshell/master/logicshell.png'
 
         # ReleaseNotes of this module
         ReleaseNotes = 'Initial Release'
