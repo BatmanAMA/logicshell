@@ -1,5 +1,5 @@
+![](./logicshell.png)
 # LogicShell
-![LS-logo](./logicshell.png =250x250)
 A simple PowerShell wrapper for LogicMonitor!
 
 This module is feature complete using just "invoke-lmApi" - all other commands are just there as helper functions to make it a little easier.
