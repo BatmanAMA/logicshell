@@ -145,6 +145,7 @@ function Invoke-lmAPI
             {
                 Write-Error -Message "Call to LM failed! $($Response.errmsg)" -ErrorId $Response.status
             }
+            $Response
         }
         Catch
         {
