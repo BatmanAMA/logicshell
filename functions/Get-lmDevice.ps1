@@ -1,15 +1,14 @@
 <#
 .SYNOPSIS
-    Short description
+    Get devices from logicmonitor
 .DESCRIPTION
-    Long description
+    Implements device/devices endpoint from the logicmonitor API
 .EXAMPLE
     Get-lmDevice
     #Returns all logicmonitor devices
 .EXAMPLE
     Get-lmDevice -filter '*dc*'
     #returns all LogicMonitor Devices with DC in the name
-
 #>
 function Get-lmDevice {
     [CmdletBinding()]
