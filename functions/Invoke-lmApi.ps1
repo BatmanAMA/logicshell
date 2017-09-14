@@ -92,7 +92,12 @@ function Invoke-lmAPI
         }
 
         $Epoch = [DateTimeOffset]::Now.ToUnixTimeMilliseconds()
-        $requestVars = $httpVerb.ToString().ToUpper() + $epoch + $body + $Resource
+        $requestVars = $httpVerb.ToString().ToUpper() + $epoch 
+        if ($Body)
+        {
+            $requestVars += $Body
+        }
+        $requestVars += $Resource
         Write-Verbose -Message "RequestVars: $requestVars"
         <#
         Code for SecureString to String 
@@ -133,11 +138,17 @@ function Invoke-lmAPI
             #MaximumRedirection
             #TransferEncoding
         }
-        $Response = Invoke-RestMethod @Params
-        Write-Verbose "Status $($Response.status)"
-        if ($Response.status -ne 200)
+        try {
+            $Response = Invoke-RestMethod @Params
+            Write-Verbose "Status $($Response.status)"
+            if ($Response.status -ne 200)
+            {
+                Write-Error -Message "Call to LM failed! $($Response.errmsg)" -ErrorId $Response.status
+            }
+        }
+        Catch
         {
-            Write-Error -Message "Call to LM failed! $($Response.errmsg)" -ErrorId $Response.status
+            Write-Error -Message ("LM API failure: {0}" -f $_.Exception.Message)
         }
     }
 }
