@@ -64,7 +64,11 @@ function Get-lmSdt {
         $toReturn = Invoke-LMApi -Resource sdt/sdts -Query $QueryParm
         $items = $toReturn.data.items
         while ($toReturn.data.total -gt @($items).Count) {
-            $QueryParm['searchid'] = $toReturn.searchid
+            try
+            {
+                $QueryParm['searchid'] = $toReturn.searchid
+            }
+            catch{}
             $QueryParm['offset'] = $items.count
             $toReturn = Invoke-LMApi -Resource sdt/sdts -Query $QueryParm
             $items += $toReturn.data.items

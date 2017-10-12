@@ -19,66 +19,62 @@ Using file for storing key - will only run if everything is run as the same wind
 If you use "Connect-lmAPI" first, other calls to this command will not need the connection info (company, accesskey and accessid)
 All calls after the first in a script can forgo that information as well.
 #>
-function Invoke-lmAPI
-{
-    [CmdletBinding(DefaultParameterSetName='Normal')]
+function Invoke-lmAPI {
+    [CmdletBinding(DefaultParameterSetName = 'Normal')]
     Param (
         # The resource path to connect to
-        [Parameter(Mandatory=$true,
-                   Position=0,
-                   ParameterSetName='Normal')]
-        [Parameter(Mandatory=$true,
-                   Position=0,
-                   ParameterSetName='Connect')]
+        [Parameter(Mandatory = $true,
+            Position = 0,
+            ParameterSetName = 'Normal')]
+        [Parameter(Mandatory = $true,
+            Position = 0,
+            ParameterSetName = 'Connect')]
         [String]
         $Resource,
         # The HTTP verb to use for this request
-        [Parameter(ParameterSetName='Normal')]
-        [Parameter(ParameterSetName='Connect')]
+        [Parameter(ParameterSetName = 'Normal')]
+        [Parameter(ParameterSetName = 'Connect')]
         [Alias("Verb")] 
         [Microsoft.PowerShell.Commands.WebRequestMethod]
-        $HttpVerb ="Get",
+        $HttpVerb = "Get",
         #AccessId for this API
-        [Parameter(Mandatory=$true,ParameterSetName='Connect')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Connect')]
         [String]
         $AccessId,
         #AccessKey for this API
-        [Parameter(Mandatory=$true,ParameterSetName='Connect')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Connect')]
         [SecureString]
         $AccessKey,
         #Company for this API
-        [Parameter(Mandatory=$true,ParameterSetName='Connect')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Connect')]
         [String]
         $Company,
         #Dictionary to be constructed into a QueryString
-        [Parameter(ParameterSetName='Normal')]
-        [Parameter(ParameterSetName='Connect')]
+        [Parameter(ParameterSetName = 'Normal')]
+        [Parameter(ParameterSetName = 'Connect')]
         [hashtable]
         $Query,
         #Body of the request
-        [Parameter(ParameterSetName='Normal')]
-        [Parameter(ParameterSetName='Connect')]
+        [Parameter(ParameterSetName = 'Normal')]
+        [Parameter(ParameterSetName = 'Connect')]
         [Object]
         $Body
         
     )
-    begin
-    {
-        if ($PSCmdlet.ParameterSetName -eq 'Connect')
-        {
+    begin {
+        if ($PSCmdlet.ParameterSetName -eq 'Connect') {
             $Script:AccessId = $AccessId
             $Script:AccessKey = $AccessKey
             $Script:Company = $Company
             $Script:AccessKey.MakeReadOnly()
         }
     }
-    process
-    {   
-        if ($Query)
-        {
+    process {   
+        $QueryString = ""
+        if ($Query) {
             $QueryString = ($Query.Keys | ForEach-Object {
-                "{0}={1}" -f $_, $Query[$_]
-            }) -join '&'
+                    "{0}={1}" -f $_, $Query[$_]
+                }) -join '&'
         }
         
         #Make sure resource is constructed '/path/path'
@@ -93,8 +89,7 @@ function Invoke-lmAPI
 
         $Epoch = [DateTimeOffset]::Now.ToUnixTimeMilliseconds()
         $requestVars = $httpVerb.ToString().ToUpper() + $epoch 
-        if ($Body)
-        {
+        if ($Body) {
             $requestVars += $Body
         }
         $requestVars += $Resource
@@ -126,14 +121,14 @@ function Invoke-lmAPI
         $auth = 'LMv1 ' + $Script:accessId + ':' + $signature + ':' + $epoch
         Write-Verbose -Message "Auth: $auth"
         $Params = @{
-            Uri = $URI.Uri
-            Method = $HttpVerb
-            UserAgent = "LM-{0}-PowerShell" -f $Script:Company
-            Headers = @{
+            Uri         = $URI.Uri
+            Method      = $HttpVerb
+            UserAgent   = "LM-{0}-PowerShell" -f $Script:Company
+            Headers     = @{
                 Authorization = $auth
             }
             ContentType = 'application/json'
-            Body = $Body
+            Body        = $Body
             #TimeoutSec
             #MaximumRedirection
             #TransferEncoding
@@ -141,14 +136,12 @@ function Invoke-lmAPI
         try {
             $Response = Invoke-RestMethod @Params
             Write-Verbose "Status $($Response.status)"
-            if ($Response.status -ne 200)
-            {
+            if ($Response.status -ne 200) {
                 Write-Error -Message "Call to LM failed! $($Response.errmsg)" -ErrorId $Response.status
             }
             $Response
         }
-        Catch
-        {
+        Catch {
             Write-Error -Message ("LM API failure: {0}" -f $_.Exception.Message)
         }
     }
