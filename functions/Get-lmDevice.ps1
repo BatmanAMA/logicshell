@@ -66,7 +66,7 @@ function Get-lmDevice {
         }
         $toReturn = Invoke-LMApi -Resource device/devices -Query $QueryParm
         $items = $toReturn.data.items
-        while ($toReturn.data.total -gt $items.Count)
+        while ($toReturn.data.total -gt @($items).Count)
         {
             $QueryParm['offset'] = $items.count
             $toReturn = Invoke-LMApi -Resource device/devices -Query $QueryParm
