@@ -50,7 +50,7 @@ function Get-lmDevice {
     
     process {
         $QueryParm = @{size=$ItemLimit}
-        if ($Filter.Count -gt 0)
+        if (@($Filter).Count -gt 0)
         {
             $FilterString = $Filter -join ','
             $QueryParm['filter'] =$FilterString
@@ -59,14 +59,14 @@ function Get-lmDevice {
         {
             $QueryParm['sort'] =$Sort
         }
-        if ($Field.Count -gt 0)
+        if (@($Field).Count -gt 0)
         {
             $FieldString = $Field -join ','
             $QueryParm['fields'] =$FieldString
         }
         $toReturn = Invoke-LMApi -Resource device/devices -Query $QueryParm
         $items = $toReturn.data.items
-        while ($toReturn.data.total -gt $items.Count)
+        while ($toReturn.data.total -gt @($items).Count)
         {
             $QueryParm['offset'] = $items.count
             $toReturn = Invoke-LMApi -Resource device/devices -Query $QueryParm

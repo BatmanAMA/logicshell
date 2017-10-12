@@ -53,6 +53,6 @@ $body = @{
             name="api"
         }
     }
-}
+} | ConvertTo-Json -compress
 Invoke-LMApi -Resource setting/opsnotes -Body $body -HttpVerb POST
 ```
