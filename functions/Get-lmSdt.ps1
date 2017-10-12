@@ -61,7 +61,7 @@ function Get-lmSdt {
             $FieldString = $Field -join ','
             $QueryParm['fields'] = $FieldString
         }
-        $toReturn = Invoke-LMApi -Resource device/devices -Query $QueryParm
+        $toReturn = Invoke-LMApi -Resource sdt/sdts -Query $QueryParm
         $items = $toReturn.data.items
         while ($toReturn.data.total -gt @($items).Count) {
             $QueryParm['searchid'] = $toReturn.searchid
