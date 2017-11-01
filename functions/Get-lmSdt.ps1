@@ -1,9 +1,9 @@
 
 <#
 .SYNOPSIS
-    Removes scheduled downtime by device, user or time
+    Gets scheduled downtime by device, user or time
 .DESCRIPTION
-    Pop pop
+    This command implements the GET method of the logicmonitor API
 .EXAMPLE
     #Puts the device named "CORP-DC01" in Scheduled Downtime for the next 3 hours
     Add-lmSdt -Type Device -Name CORP-DC01 -StartTime (Get-Date) -EndTime ((Get-Date).AddHours(3)) -Comment "DC is acting up, rebooting and running some diagnostics"
