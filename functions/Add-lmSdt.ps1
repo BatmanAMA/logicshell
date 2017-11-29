@@ -15,10 +15,10 @@
 #>
 function Add-lmSdt 
 {
-    [CmdletBinding(DefaultParameterSetName='name')]
+    [CmdletBinding(DefaultParameterSetName = 'name')]
     Param (
         #What object you will schedule SDT for
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet(
             "Service",
             "ServiceGroup",
@@ -33,46 +33,47 @@ function Add-lmSdt
         [String]
         $Type,
         #ID of the thing to schedule downtime for
-        [Parameter(Mandatory=$true,ParameterSetName="id")]
+        [Parameter(Mandatory = $true, ParameterSetName = "id")]
         [int]
         $Id,
         #Name of the thing to schedule downtime for
-        [Parameter(Mandatory=$true,ParameterSetName="name")]
+        [Parameter(Mandatory = $true, ParameterSetName = "name")]
         [String]
         $Name,
         #What time the SDT should start
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [DateTimeOffset]
         $StartTime,
         #What time the SDT should start
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [DateTimeOffset]
         $EndTime,
         #A comment to include (Recommended)
         [String]
         $Comment
     )
-    process {
+    process
+    {
 
         $data = New-Object psobject -Property @{
-            sdtType = 1
-            type = "{0}SDT" -f $Type
+            sdtType       = 1
+            type          = "{0}SDT" -f $Type
             startDateTime = $StartTime.ToUnixTimeMilliseconds()
-            endDateTime = $EndTime.ToUnixTimeMilliseconds()
-            comment = $Comment
+            endDateTime   = $EndTime.ToUnixTimeMilliseconds()
+            comment       = $Comment
         }
         if ($PSCmdlet.ParameterSetName -eq 'id')
         {
             $idProp = "{0}Id" -f $Type
             #fix capitalization
-            $idProp = $idProp.Substring(0,1).ToLower() + $idProp.Substring(1)
+            $idProp = $idProp.Substring(0, 1).ToLower() + $idProp.Substring(1)
             $data | Add-Member -NotePropertyName $idProp -NotePropertyValue $Id
         }
         if ($PSCmdlet.ParameterSetName -eq 'name')
         {
             $nameProp = "{0}Name" -f $type
             #fix capitalization
-            $nameProp = $nameProp.Substring(0,1).ToLower() + $nameProp.Substring(1)
+            $nameProp = $nameProp.Substring(0, 1).ToLower() + $nameProp.Substring(1)
             $data | Add-Member -NotePropertyName $nameProp -NotePropertyValue $Name
         }
         $data = $data | ConvertTo-Json -Compress
