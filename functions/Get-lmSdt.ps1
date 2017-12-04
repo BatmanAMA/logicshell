@@ -13,7 +13,8 @@
 .NOTES
     LogicMonitor cares about capitalization, if it really matters, use ID.
 #>
-function Get-lmSdt {
+function Get-lmSdt
+{
     [CmdletBinding(DefaultParameterSetName = 'name')]
     Param (
         <# 
@@ -47,28 +48,33 @@ function Get-lmSdt {
         [int]
         $ItemLimit = 500
     )
-    process {
+    process
+    {
 
         $QueryParm = @{size = $ItemLimit}
-        if (@($Filter).Count -gt 0) {
+        if (@($Filter).Count -gt 0)
+        {
             $FilterString = $Filter -join ','
             $QueryParm['filter'] = $FilterString
         }
-        if ($Sort.Length -gt 0) {
+        if ($Sort.Length -gt 0)
+        {
             $QueryParm['sort'] = $Sort
         }
-        if (@($Field).Count -gt 0) {
+        if (@($Field).Count -gt 0)
+        {
             $FieldString = $Field -join ','
             $QueryParm['fields'] = $FieldString
         }
         $toReturn = Invoke-LMApi -Resource sdt/sdts -Query $QueryParm
         $items = $toReturn.data.items
-        while ($toReturn.data.total -gt @($items).Count) {
+        while ($toReturn.data.total -gt @($items).Count)
+        {
             try
             {
                 $QueryParm['searchid'] = $toReturn.searchid
             }
-            catch{}
+            catch {}
             $QueryParm['offset'] = $items.count
             $toReturn = Invoke-LMApi -Resource sdt/sdts -Query $QueryParm
             $items += $toReturn.data.items

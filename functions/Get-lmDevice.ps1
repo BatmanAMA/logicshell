@@ -10,7 +10,8 @@
     Get-lmDevice -filter '*dc*'
     #returns all LogicMonitor Devices with DC in the name
 #>
-function Get-lmDevice {
+function Get-lmDevice
+{
     [CmdletBinding()]
     Param (
         <# 
@@ -27,7 +28,7 @@ function Get-lmDevice {
             Includes:               ~
             Does not include:       :
         #>
-        [Parameter(Position=0)]
+        [Parameter(Position = 0)]
         [String[]]
         $Filter,
         
@@ -45,24 +46,26 @@ function Get-lmDevice {
         $ItemLimit = 500
     )
     
-    begin {
+    begin
+    {
     }
     
-    process {
-        $QueryParm = @{size=$ItemLimit}
+    process
+    {
+        $QueryParm = @{size = $ItemLimit}
         if (@($Filter).Count -gt 0)
         {
             $FilterString = $Filter -join ','
-            $QueryParm['filter'] =$FilterString
+            $QueryParm['filter'] = $FilterString
         }
         if ($Sort.Length -gt 0)
         {
-            $QueryParm['sort'] =$Sort
+            $QueryParm['sort'] = $Sort
         }
         if (@($Field).Count -gt 0)
         {
             $FieldString = $Field -join ','
-            $QueryParm['fields'] =$FieldString
+            $QueryParm['fields'] = $FieldString
         }
         $toReturn = Invoke-LMApi -Resource device/devices -Query $QueryParm
         $items = $toReturn.data.items
