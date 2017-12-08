@@ -1,15 +1,16 @@
 stages:
+  - lint
   - test
   - release
 variables:
   GIT_SSL_NO_VERIFY: "true"
-Lint:
+lint:
   stage: lint
   tags:
     - pwsh
   script:
     - $results = Invoke-ScriptAnalyzer . -Recurse; $results; exit $results.count
-Test:
+test:
   stage: test
   tags: 
    - pwsh
@@ -17,7 +18,7 @@ Test:
    - Invoke-Pester -EnableExit -CodeCoverage .\functions\*.ps1
   except:
     - master
-Release:
+release:
   stage: release
   tags: 
    - pwsh
