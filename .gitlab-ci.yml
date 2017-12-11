@@ -7,13 +7,14 @@ variables:
 lint:
   stage: lint
   tags:
-    - pwsh
+    - powershell
   script:
     - $results = Invoke-ScriptAnalyzer . -Recurse; $results; exit $results.count
 test:
   stage: test
   tags: 
-   - pwsh
+   - powershell
+   - pester
   script:
    - Invoke-Pester -EnableExit -CodeCoverage .\functions\*.ps1
   except:
@@ -21,7 +22,8 @@ test:
 release:
   stage: release
   tags: 
-   - pwsh
+   - powershell
+   - psgallery
   script:
    - Invoke-PSDeploy
   only:
