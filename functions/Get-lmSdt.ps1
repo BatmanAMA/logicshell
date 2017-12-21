@@ -74,7 +74,10 @@ function Get-lmSdt
             {
                 $QueryParm['searchid'] = $toReturn.searchid
             }
-            catch {}
+            catch 
+            {
+                Write-Error "no searchid in the returned data" -ErrorAction "SilentlyContinue"
+            }
             $QueryParm['offset'] = $items.count
             $toReturn = Invoke-LMApi -Resource sdt/sdts -Query $QueryParm
             $items += $toReturn.data.items

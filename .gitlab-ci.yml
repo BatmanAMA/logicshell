@@ -9,7 +9,7 @@ lint:
   tags:
     - powershell
   script:
-    - $results = Invoke-ScriptAnalyzer . -Recurse; $results; exit $results.count
+    - $results = Invoke-ScriptAnalyzer .\functions\; $results; exit $results.count
 test:
   stage: test
   tags: 
@@ -21,10 +21,11 @@ test:
     - master
 release:
   stage: release
-  tags: 
+  tags:
    - powershell
    - psgallery
   script:
    - Invoke-PSDeploy
   only:
     - master
+  when: manual
